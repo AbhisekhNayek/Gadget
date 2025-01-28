@@ -1,0 +1,174 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "IMF Gadget API",
+      "version": "1.0.0",
+      "description": "API for managing IMF gadgets"
+    },
+    "host": "localhost:4000",
+    "schemes": ["http"],
+    "paths": {
+      "/gadgets": {
+        "get": {
+          "summary": "Get all gadgets",
+          "description": "Retrieve a list of all gadgets with a random mission success probability.",
+          "responses": {
+            "200": {
+              "description": "A list of gadgets.",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Gadget"
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Add a new gadget",
+          "description": "Create a new gadget with a randomly generated codename.",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/GadgetInput"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "The created gadget.",
+              "schema": {
+                "$ref": "#/definitions/Gadget"
+              }
+            }
+          }
+        }
+      },
+      "/gadgets/{id}": {
+        "patch": {
+          "summary": "Update a gadget",
+          "description": "Update the details of an existing gadget.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/GadgetInput"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The updated gadget.",
+              "schema": {
+                "$ref": "#/definitions/Gadget"
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Decommission a gadget",
+          "description": "Mark a gadget as decommissioned.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The decommissioned gadget.",
+              "schema": {
+                "$ref": "#/definitions/Gadget"
+              }
+            }
+          }
+        }
+      },
+      "/gadgets/{id}/self-destruct": {
+        "post": {
+          "summary": "Self-destruct a gadget",
+          "description": "Trigger the self-destruction of a gadget.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Confirmation of self-destruction.",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "confirmationCode": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Gadget": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "codename": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "decommissionedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GadgetInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+  

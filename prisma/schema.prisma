@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL") 
+}
+
+model Gadget {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  codename        String   @unique
+  status          String   @default("Available") // ["Available", "Deployed", "Destroyed", "Decommissioned"]
+  decommissionedAt DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
