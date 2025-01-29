@@ -20,6 +20,8 @@ export const createGadget = async (req, res) => {
   }
 };
 
+
+
 // GET: Retrieve all gadgets
 export const getAllGadgets = async (req, res) => {
   try {
@@ -38,6 +40,8 @@ export const getAllGadgets = async (req, res) => {
     res.status(500).json({ error: 'Error fetching gadgets' });
   }
 };
+
+
 
 // PATCH: Update an existing gadget
 export const updateGadget = async (req, res) => {
@@ -60,6 +64,8 @@ export const updateGadget = async (req, res) => {
   }
 };
 
+
+
 // DELETE: Remove a gadget (decommission it)
 export const deleteGadget = async (req, res) => {
   const { id } = req.params;
@@ -78,6 +84,8 @@ export const deleteGadget = async (req, res) => {
   }
 };
 
+
+
 // POST: Trigger the self-destruct sequence for a specific gadget
 export const selfDestructGadget = async (req, res) => {
   const { id } = req.params;
@@ -95,3 +103,33 @@ export const selfDestructGadget = async (req, res) => {
     res.status(500).json({ error: 'Error triggering self-destruct sequence' });
   }
 };
+
+
+
+// GET: Retrieve gadgets with optional status filter
+export const getGadgets = async (req, res) => {
+  let { status } = req.query; 
+
+  try {
+    // Ensure status filtering is applied properly
+    const where = status ? { status: { equals: status } } : {}; 
+
+    // Fetch gadgets from the database 
+    const gadgets = await prisma.gadget.findMany({
+      where,
+    });
+
+    // Add mission success probability to each gadget
+    const gadgetsWithProbability = gadgets.map((gadget) => ({
+      ...gadget,
+      missionSuccessProbability: `${Math.floor(Math.random() * 100) + 1}%`, 
+    }));
+
+    // Send the response with the filtered gadgets and their probabilities
+    res.status(200).json(gadgetsWithProbability);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving gadgets' });
+  }
+};
+

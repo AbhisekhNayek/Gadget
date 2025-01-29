@@ -6,6 +6,11 @@ import connectDB from './config/db.config.js';
 
 const app = express();
 
+// Default route (basic response)
+app.get('/', (req, res) => {
+    res.status(200).send('🚀 Welcome to the IMF Gadget API');
+});
+
 // Middleware to parse JSON
 app.use(express.json());
 

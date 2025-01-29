@@ -5,6 +5,7 @@ import {
   updateGadget,
   deleteGadget,
   selfDestructGadget,
+  getGadgets,
 } from "../controllers/gadget.controller.js";
 import { verifyToken } from "../middlewares/auth.middleware.js";
 
@@ -26,5 +27,8 @@ router.delete("/:id", verifyToken, deleteGadget);
 
 // POST /gadgets/:id/self-destruct
 router.post("/:id/self-destruct", verifyToken, selfDestructGadget); 
+
+// GET /gadgets?status={status}
+router.get('/', verifyToken, getGadgets);
 
 export default router;
